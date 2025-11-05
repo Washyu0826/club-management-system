@@ -1,3 +1,4 @@
+// config/database.js
 import pg from 'pg';
 import dotenv from 'dotenv';
 
@@ -5,18 +6,18 @@ dotenv.config();
 
 const { Pool } = pg;
 
-// 優先使用 DATABASE_URL（Render / Railway / Supabase 常用）
-// 其次才用單獨參數（本機開發）
+// 偵測是否在雲端（Render / Railway / Supabase）
 const useUrl = !!process.env.DATABASE_URL;
 
+// 建立連線池
 const pool = useUrl
   ? new Pool({
       connectionString: process.env.DATABASE_URL,
-      // Render 的 Postgres 需要 SSL；本地不用
+      // Render 需要 SSL（internal/external 都可安全使用）
       ssl: { rejectUnauthorized: false },
       max: 20,
-      idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 5_000,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
     })
   : new Pool({
       host: process.env.DB_HOST || 'localhost',
@@ -24,12 +25,13 @@ const pool = useUrl
       database: process.env.DB_NAME || 'club_management',
       user: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || '',
+      ssl: false, // 本機不用 SSL
       max: 20,
-      idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 5_000,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
     });
 
-// 測試資料庫連接（啟動時跑一次）
+// 啟動時測試資料庫連線
 pool.on('connect', () => {
   console.log('✅ Database connected successfully');
 });
@@ -38,7 +40,7 @@ pool.on('error', (err) => {
   console.error('❌ Unexpected database error:', err);
 });
 
-// 小工具：查詢
+// 封裝查詢
 export const query = async (text, params) => {
   const start = Date.now();
   const res = await pool.query(text, params);
@@ -47,7 +49,7 @@ export const query = async (text, params) => {
   return res;
 };
 
-// 小工具：拿 client（交易用）
+// 交易用 client
 export const getClient = async () => {
   const client = await pool.connect();
   const release = client.release.bind(client);
