@@ -180,13 +180,13 @@ curl http://localhost:5000/
 
 ## 🔧 開發路線圖
 
-### Phase 1: 基礎建設 ✅
+### Phase 1: 基礎建設 （進行中）
 - [x] 資料庫設計
 - [x] 後端 API 開發
 - [x] 認證系統
 - [x] 權限管理
 
-### Phase 2: 前端開發（進行中）
+### Phase 2: 前端開發
 - [ ] 登入/註冊頁面
 - [ ] 社員管理介面
 - [ ] 檔案瀏覽系統
@@ -256,8 +256,8 @@ MIT License - 詳見 [LICENSE](./LICENSE)
 
 ## 📊 專案狀態
 
-- ✅ **Phase 1: 後端 API** - 已完成
-- 🚧 **Phase 2: 前端開發** - 進行中
+- ✅ **Phase 1: 後端 API** - 進行中
+- 🚧 **Phase 2: 前端開發** - 規劃中
 - ⏳ **Phase 3: 進階功能** - 規劃中
 - ⏳ **Phase 4: 部署上線** - 規劃中
 
@@ -267,6 +267,5 @@ MIT License - 詳見 [LICENSE](./LICENSE)
 
 **⭐ 如果這個專案對你有幫助，請給個 Star！**
 
-Made with ❤️ for student clubs
 
 </div>
